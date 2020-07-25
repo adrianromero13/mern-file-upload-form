@@ -47,5 +47,6 @@ class App extends Component {
       </form>
     )
   }
-
 }
+
+export default App;
