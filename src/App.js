@@ -1,52 +1,35 @@
-import React, { Component } from 'react';
-import axios from 'axios';
+import React from 'react';
 
-import './App.css';
+import './App.css'
 
-class App extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      file: null
-    };
-    this.onFormSubmit = this.onFormSubmit.bind(this);
-    this.onChange = this.onChange.bind(this);
-  }
-  onFormSubmit(e) {
+const Input = (props) => (
+  <input
+    {...props}
+    type='file'
+    name='file-input'
+    multiple
+  />
+);
+
+const App = () => {
+  const onSubmit = (e) => {
     e.preventDefault();
-    const formData = new FormData();
-    formData.append('myfile', this.state.file);
-    const config = {
-      headers: {
-        'content-type': 'multipart/form-data'
-      }
-    };
-    axios.post('http://localhost:5000/upload', formData, config)
-      .then((respose) => {
-        alert('The file is successfully uploaded');
-      }).catch((error) => {
-      });
   }
 
-  onChange(e) {
-    this.setState({ file: e.target.files });
+  const onChange = (e) => {
+    console.log(e.target.files);
   }
 
-  render() {
-    return (
-      <form onSubmit={this.onFormSubmit}>
-        <h1>File Upload</h1>
-        <input
-          type='file'
-          className='custom-file-input'
-          name='myImage'
-          onChange={this.onChange}
-        />
-        {console.log(this.state.file)}
-        <button className='upload-button' type='submit'>Upload to DB</button>
+  return (
+    <div className='container'>
+      <form className='form' onSubmit={onSubmit}>
+        <div>
+          <Input onChange={onChange} />
+          <button type='submit'>Submit</button>
+        </div>
       </form>
-    )
-  }
+    </div>
+  )
 }
 
 export default App;
