@@ -1,5 +1,5 @@
 import React from 'react';
-import { useReducer, useCallback } from 'react';
+import { useReducer, useCallback, useEffect } from 'react';
 import { useDispatch } from 'react-redux'
 
 import {
@@ -23,7 +23,9 @@ const initialState = {
 const uploadReducer = (state, action) => {
   switch (action.type) {
     case 'load':
-      return { ...state, files: action.files, status: LOADED }
+      return { ...state, files: action.files, status: LOADED };
+    case 'submit':
+      return { ...state, uploading: true, pending: state.files, status: INIT };
     default:
       return state;
   }
@@ -47,7 +49,11 @@ const useFileHandlers = () => {
       dispatch({ type: 'load', files });
     }
   }
-  return {}
+  return {
+    ...state,
+    onSubmit,
+    onChange,
+  }
 }
 
 const onSubmit = useCallback((e) => {
@@ -60,5 +66,7 @@ const onSubmit = useCallback((e) => {
 },
   [state.files.length],
 )
+
+
 
 export default useFileHandlers;
